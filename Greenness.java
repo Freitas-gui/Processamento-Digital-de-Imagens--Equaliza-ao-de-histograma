@@ -36,7 +36,7 @@ public BufferedImage GreennKG(BufferedImage img, float K) {
 			
 			for(int lin=i-1; lin<=i+1; lin++) {
 				for(int col=j-1; col<=j+1; col++) {
-					Color x = new Color(img.getRGB(lin , col));
+					Color x = new Color(img.getRGB(col , lin));
 		    		soma += (int)x.getRed();//soma todos os valores em uma mascara 3x3
 		    	}
 			}
@@ -44,26 +44,26 @@ public BufferedImage GreennKG(BufferedImage img, float K) {
 			//soma -= central.getRed();// pixel central eh extraido da soma total mascara 3x3
 			soma = (int)soma/9;//valor da media dos pixel vizinhos mascara 3x3
 			Color x = new Color(soma,soma,soma);
-			media.setRGB(i,j,x.getRGB());
+			media.setRGB(j,i,x.getRGB());
 			soma=0;
 		}
 	}
 	//preenche as fronteiras da imagem media{
 	for(int j=1  ; j<img.getWidth()-1; j++) { 
-		Color x = new Color(media.getRGB(1 , j));
-		media.setRGB(0, j, x.getRGB());
+		Color x = new Color(media.getRGB(j , 1));
+		media.setRGB(j, 0, x.getRGB());
 	}
 	for(int i=0  ; i<img.getHeight()-1; i++) { 
 		Color x = new Color(media.getRGB(i , img.getWidth()-2));
-		media.setRGB(i,img.getWidth()-1 , x.getRGB());
+		media.setRGB(img.getWidth()-1 ,i, x.getRGB());
 	}
 	for(int j=1  ; j<img.getWidth(); j++) { 
 		Color x = new Color(media.getRGB(img.getHeight()-2 , j));
-		media.setRGB(img.getHeight()-1, j, x.getRGB());
+		media.setRGB(j, img.getHeight()-1, x.getRGB());
 	}
 	for(int i=0  ; i<img.getHeight(); i++) { 
-		Color x = new Color(media.getRGB(i , 1));
-		media.setRGB(i,0 , x.getRGB());
+		Color x = new Color(media.getRGB(1 , i));
+		media.setRGB(0,i , x.getRGB());
 	}
 	//}preenche as fronteiras da imagem media
 	
@@ -71,8 +71,8 @@ public BufferedImage GreennKG(BufferedImage img, float K) {
 	double numerador=0;
 	for(int i=0;i<img.getHeight();i++) {
 		for(int j=0;j<img.getWidth();j++) {
-			Color x = new Color(media.getRGB(i , j));
-			Color central = new Color(img.getRGB(i, j));
+			Color x = new Color(media.getRGB(j , i));
+			Color central = new Color(img.getRGB(j, i));
 			numerador+= Math.pow(central.getRed()-x.getRed(),2);
 		}
 	}
@@ -91,7 +91,7 @@ public BufferedImage GreennKG(BufferedImage img, float K) {
 
 			for(int lin=i-1; lin<=i+1; lin++) {
 				for(int col=j-1; col<=j+1; col++) {
-					Color central = new Color(img.getRGB(i, j));
+					Color central = new Color(img.getRGB(j, i));
 					Color x = new Color(img.getRGB(lin , col));
 					diferenca += Math.pow( (central.getRed() - x.getRed() ),2);
 		    	}
@@ -152,7 +152,7 @@ public BufferedImage GreennKG(BufferedImage img, float K) {
     for (int i = 0; i < img.getWidth(); i++) {
     	// for acima e abaixo servem para preencher os valores do histograma original
         for (int j = 0; j < img.getHeight(); j++) {
-        	Color x = new Color(img.getRGB(i , j));
+        	Color x = new Color(img.getRGB(j , i));
         	original[x.getRed()] += 1;
         }
     }
@@ -246,10 +246,10 @@ public BufferedImage GreennKG(BufferedImage img, float K) {
     for(int i=0 ; i<img.getWidth() ; i++) {
 		for(int j=0; j<img.getHeight(); j++) {
 			
-			Color x = new Color(img.getRGB(i, j));
+			Color x = new Color(img.getRGB(j, i));
 			int corNova = (int) NovoNivel[x.getRed()]; 
             Color novo = new Color(corNova,corNova, corNova);
-            res.setRGB(i, j, novo.getRGB());
+            res.setRGB(j, i, novo.getRGB());
         }
     }
     return res;
